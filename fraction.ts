@@ -4,9 +4,13 @@ export class Fraction {
   constructor(
     private numerator: number,
     private denominator: number,
-  ) {}
+  ) {
+    if (denominator === 0) {
+      throw new Error("denominator cannot be zero")
+    }
+  }
 
-  public add(other: Fraction) {
+  public add(other: Fraction) { //
     const newNumerator =
       this.numerator * other.denominator + other.numerator * this.denominator;
     const newDenominator = this.denominator * other.denominator;
@@ -14,7 +18,7 @@ export class Fraction {
     this.denominator = newDenominator;
   }
 
-  public subtract(other: Fraction) {
+  public subtract(other: Fraction) { //
     const newNumerator =
       this.numerator * other.denominator - other.numerator * this.denominator;
     const newDenominator = this.denominator * other.denominator;
@@ -22,25 +26,25 @@ export class Fraction {
     this.denominator = newDenominator;
   }
 
-  public multiply(other: Fraction) {
+  public multiply(other: Fraction) { //
     const newNumerator = this.numerator * other.numerator;
     const newDenominator = this.denominator * other.denominator;
     this.numerator = newNumerator;
     this.denominator = newDenominator;
   }
 
-  public divide(other: Fraction) {
+  public divide(other: Fraction) { //
     const newNumerator = this.numerator * other.denominator;
     const newDenominator = this.denominator * other.numerator;
     this.numerator = newNumerator;
     this.denominator = newDenominator;
   }
 
-  public toFloat(precision: number): number {
+  public toFloat(precision: number): number { //
     return roundTo(this.numerator / this.denominator, precision);
   }
 
-  public toString(): string {
+  public toString(): string { //
     return `${this.numerator}/${this.denominator}`;
   }
 
@@ -53,6 +57,9 @@ export class Fraction {
     const denominator = Number.parseFloat(parts[1].trim());
     if (Number.isNaN(numerator) || Number.isNaN(denominator)) {
       throw new Error(`non-numeric numerator/denominator`);
+    }
+    if (denominator === 0){
+      throw new Error("denominator cannot be zero")
     }
     return new Fraction(numerator, denominator);
   }
