@@ -1,4 +1,5 @@
 import { roundTo } from "./utils.ts";
+import { Gcd } from "./gcd.ts";
 
 export class Fraction {
   constructor(
@@ -8,36 +9,55 @@ export class Fraction {
     if (denominator === 0) {
       throw new Error("denominator cannot be zero")
     }
-  }
 
-  public add(other: Fraction) { //
+    const gcd = new Gcd();
+    const g = gcd.gcdEuclid(numerator, denominator);
+
+    this.numerator = numerator / g;
+    this.denominator = denominator / g;
+  }
+  
+  public cancel(): Fraction {
+      const gcd = new Gcd();
+      const g = gcd.gcdEuclid(Math.abs(this.numerator), Math.abs(this.denominator));
+
+      return new Fraction( 
+        this.numerator / g,
+        this.denominator / g
+      );
+    }
+
+  public add(other: Fraction): Fraction { //
     const newNumerator =
       this.numerator * other.denominator + other.numerator * this.denominator;
+
     const newDenominator = this.denominator * other.denominator;
-    this.numerator = newNumerator;
-    this.denominator = newDenominator;
+
+    return new Fraction(newNumerator, newDenominator);
   }
 
   public subtract(other: Fraction) { //
     const newNumerator =
       this.numerator * other.denominator - other.numerator * this.denominator;
     const newDenominator = this.denominator * other.denominator;
-    this.numerator = newNumerator;
-    this.denominator = newDenominator;
+
+    return new Fraction(newNumerator, newDenominator);
   }
 
   public multiply(other: Fraction) { //
     const newNumerator = this.numerator * other.numerator;
     const newDenominator = this.denominator * other.denominator;
-    this.numerator = newNumerator;
-    this.denominator = newDenominator;
+
+    return new Fraction(newNumerator, newDenominator);
+
   }
 
   public divide(other: Fraction) { //
     const newNumerator = this.numerator * other.denominator;
     const newDenominator = this.denominator * other.numerator;
-    this.numerator = newNumerator;
-    this.denominator = newDenominator;
+
+    return new Fraction(newNumerator, newDenominator);
+
   }
 
   public toFloat(precision: number): number { //

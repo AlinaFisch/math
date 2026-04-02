@@ -23,16 +23,35 @@ Deno.test("fraction of 2/3 is roughly 0.67", () => {
   assertAlmostEquals(float, 0.67);
 });
 
+Deno.test("cancel (/12", () => {
+    // Arrange
+  const f = new Fraction(8, 12);
+
+  // Act
+  const result = f.cancel();
+
+  // Assert
+  assertEquals(result.toString(), "2/3");
+})
+
+Deno.test("8/12 is automatically reduced to 2/3", () => {
+  // Arrange
+  const fraction = new Fraction(8, 12);
+
+  // Assert
+  assertEquals(fraction.toString(), "2/3");
+})
+
 Deno.test("1/3 + 2/6 = 2/3 is roughly 0.67", () => {
   // Arrange
   const left = new Fraction(1, 3);
   const right = new Fraction(2, 6);
 
   // Act
-  left.add(right);
+  const result = left.add(right);
 
   // Assert
-  assertAlmostEquals(left.toFloat(0.01), 0.67);
+  assertAlmostEquals(result.toFloat(0.01), 0.67);
 });
 Deno.test("2/4 - 1/3 = 2/12 is roughly 0.17", () => {
 // Arrange
@@ -40,10 +59,10 @@ Deno.test("2/4 - 1/3 = 2/12 is roughly 0.17", () => {
   const right = new Fraction(1, 3);
 
   // Act
-  left.subtract(right);
+  const result = left.subtract(right);
 
   // Assert
-  assertAlmostEquals(left.toFloat(0.01), 0.17);
+  assertAlmostEquals(result.toFloat(0.01), 0.17);
 });
 
 Deno.test("2/4 * 1/3 = 2/12 is roughly 0.17", () => {
@@ -52,10 +71,10 @@ Deno.test("2/4 * 1/3 = 2/12 is roughly 0.17", () => {
   const right = new Fraction(1, 3);
 
   // Act
-  left.multiply(right);
+  const result = left.multiply(right);
 
   // Assert
-  assertAlmostEquals(left.toFloat(0.01), 0.17);
+  assertAlmostEquals(result.toFloat(0.01), 0.17);
 });
 
 Deno.test("2/4 / 1/3 = 6/4 is roughly 1.5", () => {
@@ -64,22 +83,22 @@ Deno.test("2/4 / 1/3 = 6/4 is roughly 1.5", () => {
   const right = new Fraction(1, 3);
 
   // Act
-  left.divide(right);
+  const result = left.divide(right);
 
   // Assert
-  assertAlmostEquals(left.toFloat(0.01), 1.5);
+  assertAlmostEquals(result.toFloat(0.01), 1.5);
 });
 
-Deno.test("2/4 / 1/3 = 6/4 is roughly 1.5", () => {
+Deno.test("2/4 / 1/3 = 6/4 is roughly ('*/2')", () => {
 // Arrange
   const left = new Fraction(2, 4);
   const right = new Fraction(1, 3);
 
   // Act
-  left.divide(right);
+  const result = left.divide(right);
 
   // Assert
-  assertEquals(left.toString(), "6/4");
+  assertEquals(result.toString(), "3/2");
 });
 
 Deno.test("3/4 is parsed correctly", () => {
